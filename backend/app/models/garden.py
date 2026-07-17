@@ -31,7 +31,7 @@ class Garden(Base, TimestampMixin):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
     name: Mapped[str] = mapped_column(String)
     garden_type: Mapped[GardenType] = mapped_column(default=GardenType.in_ground)
-    sunlight_exposure: Mapped[str | None] = mapped_column(str, nullable=True)
+    sunlight_exposure: Mapped[str | None] = mapped_column(String, nullable=True)
     soil_type: Mapped[str | None] = mapped_column(String, nullable=True)
     soil_ph: Mapped[str | None] = mapped_column(Float, nullable=True)
     drainage: Mapped[str | None] = mapped_column(String, nullable=True)
