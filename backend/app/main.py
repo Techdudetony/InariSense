@@ -9,6 +9,7 @@ beyond empty package placeholders, per docs/03-architecture.md.
 from fastapi import FastAPI
 
 from app.modules.gardens.router import router as gardens_router
+from app.modules.gardens.planting_router import router as plantings_router
 
 app = FastAPI(
     title="InariSense API",
@@ -17,6 +18,7 @@ app = FastAPI(
 )
 
 app.include_router(gardens_router, prefix="/gardens", tags=["gardens"])
+app.include_router(plantings_router, prefix="/plantings", tags=["plantings"])
 
 @app.get("/health")
 def health_check() -> dict[str, str]:
