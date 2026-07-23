@@ -42,18 +42,28 @@ users yet.
 
 ## Roadmap (phased)
 
-**Phase 0 — Docs (current phase, nearly complete)**
+**Phase 0 — Docs** ✅ **Complete**
 Product requirements, personas, architecture, data model, API matrix, this
 feature matrix.
 
-**Phase 1 — Scaffolding**
-`mobile/` Flutter project scaffold, `backend/` FastAPI project scaffold,
-CI setup, local dev environment docs, mock services for offline
-development.
+**Phase 1 — Scaffolding** ✅ **Complete**
+`mobile/` Flutter project scaffold, `backend/` FastAPI project scaffold.
+CI setup and mock services for offline development were originally
+scoped here but haven't been built yet — deferred, not forgotten; see
+note under Phase 2.
 
-**Phase 2 — Core Data Layer**
-Database schema + migrations for MVP entities, garden/planting CRUD API,
-mobile local cache (Drift) wired to backend sync.
+**Phase 2 — Core Data Layer** ⚠️ **Backend complete, mobile sync not started**
+Done: database schema + Alembic migrations for all MVP entities; full
+CRUD API for Garden, GardenBed, Planting, PlantSpecies, UserPlant; auth
+module (registration + guest mode). Every entity in the chain is now
+API-testable end to end.
+Not done: mobile local cache (Drift) wired to backend sync — this was
+originally scoped into Phase 2 but hasn't been touched yet, since all
+work so far has been backend-only. It's fair game to pull into Phase 3
+alongside the planting calendar UI, or treated as its own short phase —
+worth deciding explicitly rather than letting it silently slip.
+Also not done: CI setup, mock services (both originally scoped in
+Phase 1) — still open.
 
 **Phase 3 — Location & Planting Calendar**
 Location setup flow, zone/frost resolution, recommendation engine v1
