@@ -13,6 +13,7 @@ from app.modules.gardens.router import router as gardens_router
 from app.modules.gardens.planting_router import router as plantings_router
 from app.modules.gardens.garden_bed_router import router as garden_beds_router
 from app.modules.gardens.geocoding_router import router as geocoding_router
+from app.modules.gardens.zone_frost_router import router as zone_frost_router
 from app.modules.identification.species_router import router as species_router
 from app.modules.identification.user_plant_router import router as user_plants_router
 
@@ -27,6 +28,7 @@ app.include_router(gardens_router, prefix="/gardens", tags=["gardens"])
 app.include_router(plantings_router, prefix="/plantings", tags=["plantings"])
 app.include_router(garden_beds_router, prefix="/garden-beds", tags=["garden-beds"])
 app.include_router(geocoding_router, prefix="/geocode", tags=["geocoding"])
+app.include_router(zone_frost_router, prefix="/zone-frost", tags=["zone-frost"])
 app.include_router(species_router, prefix="/plant-species", tags=["plant-species"])
 app.include_router(user_plants_router, prefix="/user-plants", tags=["user-plants"])
 
