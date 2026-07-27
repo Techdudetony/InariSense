@@ -4,7 +4,16 @@ required for the string-based relationship() references (e.g. "Garden")
 in individual model files to resolve correctly.
 """
 
-from app.models.base import Base 
-from app.models.user import User
-from app.models.garden import Garden, GardenLocation, GardenBed, GardenType
-from app.models.plant import PlantSpecies, PlantVariety, UserPlant, Planting, PlantingMethod
+from app.models.base import Base  # noqa: F401
+from app.models.user import User  # noqa: F401
+from app.models.garden import Garden, GardenLocation, GardenBed, GardenType  # noqa: F401
+from app.models.plant import (  # noqa: F401
+    PlantSpecies,
+    PlantVariety,
+    UserPlant,
+    Planting,
+    PlantingMethod,
+    SunlightRequirement,
+    WaterRequirement,
+    FrostTolerance,
+)

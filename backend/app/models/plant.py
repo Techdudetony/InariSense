@@ -8,15 +8,35 @@ at that point rather than left dangling.
 
 import enum
 
-from sqlalchemy import Boolean, Date, ForeignKey, String
+from sqlalchemy import Boolean, Date, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, generate_uuid
+
 
 class PlantingMethod(str, enum.Enum):
     indoor_seed_start = "indoor_seed_start"
     direct_sow = "direct_sow"
     transplant = "transplant"
+
+
+class SunlightRequirement(str, enum.Enum):
+    full_sun = "full_sun"
+    partial_sun = "partial_sun"
+    partial_shade = "partial_shade"
+    full_shade = "full_shade"
+
+
+class WaterRequirement(str, enum.Enum):
+    low = "low"
+    moderate = "moderate"
+    high = "high"
+
+
+class FrostTolerance(str, enum.Enum):
+    frost_sensitive = "frost_sensitive"  # damaged/killed by any frost
+    half_hardy = "half_hardy"  # tolerates light frost
+    hardy = "hardy"  # tolerates hard frost
 
 
 class PlantSpecies(Base, TimestampMixin):
@@ -31,6 +51,21 @@ class PlantSpecies(Base, TimestampMixin):
     invasive_flag: Mapped[bool] = mapped_column(Boolean, default=False)
     taxonomy_source: Mapped[str | None] = mapped_column(String, nullable=True)
     synonyms: Mapped[str | None] = mapped_column(String, nullable=True)
+
+    # Growing requirements — added for the Planting Calendar recommendation
+    # engine (KAN-18/KAN-19). All nullable: a species with unknown
+    # requirements should show up as "not enough data" in a recommendation
+    # rather than block the record from existing at all.
+    sunlight_requirement: Mapped[SunlightRequirement | None] = mapped_column(nullable=True)
+    water_requirement: Mapped[WaterRequirement | None] = mapped_column(nullable=True)
+    frost_tolerance: Mapped[FrostTolerance | None] = mapped_column(nullable=True)
+    spacing_inches: Mapped[float | None] = mapped_column(Float, nullable=True)
+    soil_ph_min: Mapped[float | None] = mapped_column(Float, nullable=True)
+    soil_ph_max: Mapped[float | None] = mapped_column(Float, nullable=True)
+    germination_days_min: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    germination_days_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    maturity_days_min: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    maturity_days_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     varieties: Mapped[list["PlantVariety"]] = relationship(
         back_populates="species", cascade="all, delete-orphan"
@@ -64,7 +99,9 @@ class UserPlant(Base, TimestampMixin):
     user: Mapped["User"] = relationship(back_populates="user_plants")
     species: Mapped["PlantSpecies"] = relationship()
     variety: Mapped["PlantVariety | None"] = relationship()
-    plantings: Mapped[list["Planting"]] = relationship(back_populates="user_plant", cascade="all, delete-orphan")
+    plantings: Mapped[list["Planting"]] = relationship(
+        back_populates="user_plant", cascade="all, delete-orphan"
+    )
 
 
 class Planting(Base, TimestampMixin):
