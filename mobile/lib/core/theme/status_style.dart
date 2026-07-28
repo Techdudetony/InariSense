@@ -95,7 +95,7 @@ class ConfidenceStyle {
   const ConfidenceStyle({required this.filled, required this.dashed});
 }
 
-const Map<RecommendationConfidence, ConfidenceStyle> confidenceStyle = {
+const Map<RecommendationConfidence, ConfidenceStyle> confidenceStyles = {
   RecommendationConfidence.high: ConfidenceStyle(filled: true, dashed: false),
   RecommendationConfidence.low: ConfidenceStyle(filled: false, dashed: false),
   RecommendationConfidence.none: ConfidenceStyle(filled: false, dashed: true),
