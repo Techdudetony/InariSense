@@ -15,7 +15,10 @@ def get_zone_frost_provider() -> ZoneFrostProvider:
     return UsPhzmapZoneFrostProvider()
 
 @router.post("/", response_model=ZoneFrostResponse)
-def resolve_zone_frost(payload: ZoneFrostRequest, provider: ZoneFrostProvider = Depends(get_zone_frost_provider),) -> ZoneFrostResponse:
+def resolve_zone_frost(
+    payload: ZoneFrostRequest, 
+    provider: ZoneFrostProvider = Depends(get_zone_frost_provider),
+) -> ZoneFrostResponse:
     result = provider.resolve(payload.latitude, payload.longitude)
     return ZoneFrostResponse(
         zone=result.zone,

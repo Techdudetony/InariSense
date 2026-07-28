@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.garden import GardenBed
-from app.schemas.garden_bed import GardenBedCreate, GardenBedRead, GardenBedUpdate
+from app.schemas.garden_bed import GardenBedCreate, GardenBedRead
 
 router = APIRouter()
 

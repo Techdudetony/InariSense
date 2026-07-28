@@ -39,7 +39,11 @@ class Garden(Base, TimestampMixin):
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
 
     user: Mapped["User"] = relationship(back_populates="gardens")
-    location: Mapped["GardenLocation"] = relationship(back_populates="garden", uselist=False, cascade="all, delete-orphan")
+    location: Mapped["GardenLocation"] = relationship(
+        back_populates="garden", 
+        uselist=False, 
+        cascade="all, delete-orphan"
+    )
     beds: Mapped[list["GardenBed"]] = relationship(back_populates="garden", cascade="all, delete-orphan")
 
 class GardenLocation(Base, TimestampMixin):
@@ -71,4 +75,7 @@ class GardenBed(Base, TimestampMixin):
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
  
     garden: Mapped["Garden"] = relationship(back_populates="beds")
-    plantings: Mapped[list["Planting"]] = relationship(back_populates="garden_bed", cascade="all, delete-orphan")
+    plantings: Mapped[list["Planting"]] = relationship(
+        back_populates="garden_bed", 
+        cascade="all, delete-orphan"
+    )
