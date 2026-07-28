@@ -34,7 +34,10 @@ def get_recommendations(
         raise HTTPException(status_code=404, detail="Garden not found")
 
     if garden.location is None:
-        raise HTTPException(status_code=400, detail="This garden has no location set. Set a location before requesting recommendations.")
+        raise HTTPException(
+            status_code=400, 
+            detail="This garden has no location set. Set a location before requesting recommendations."
+        )
 
     query = db.query(PlantSpecies)
     if category:
