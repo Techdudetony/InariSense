@@ -1,5 +1,5 @@
 """Migration integrity test.
- 
+
 Runs real `alembic upgrade head` and `alembic downgrade base` as
 subprocesses against a fresh, isolated SQLite file — not mocked, not
 skipped. This is the test that would have caught every migration typo
@@ -15,7 +15,8 @@ from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 
-def _test_alembic_upgrade_and_downgrade_run_cleanly(tmp_path):
+
+def test_alembic_upgrade_and_downgrade_run_cleanly(tmp_path):
     db_path = tmp_path / "migration_ci_test.db"
     env = os.environ.copy()
     env["DATABASE_URL"] = f"sqlite:///{db_path}"
