@@ -18,10 +18,16 @@ def get_geocoding_provider() -> GeocodingProvider:
     return NominatimGeocodingProvider()
 
 @router.post("/", response_model=GeocodeResponse)
-def geocode(payload: GeocodeRequest, provider: GeocodingProvider = Depends(get_geocoding_provider),) -> GeocodeResponse:
+def geocode(
+    payload: GeocodeRequest, 
+    provider: GeocodingProvider = Depends(get_geocoding_provider),
+) -> GeocodeResponse:
     result = provider.geocode(payload.query)
     if result is None:
-        raise HTTPException(status_code=404, detail=f"No location found for '{payload.query}'. Try a more specific address, city, or ZIP.",)
+        raise HTTPException(
+            status_code=404, 
+            detail=f"No location found for '{payload.query}'. Try a more specific address, city, or ZIP.",
+        )
     return GeocodeResponse(
         latitude=result.latitude,
         longitude=result.longitude,

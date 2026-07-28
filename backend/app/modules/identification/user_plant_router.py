@@ -15,7 +15,10 @@ from app.schemas.user_plant import UserPlantCreate, UserPlantRead, UserPlantUpda
 router = APIRouter()
 
 @router.post("/", response_model=UserPlantRead, status_code=201)
-def create_user_plant(payload: UserPlantCreate, db: Session = Depends(get_db)) -> UserPlant:
+def create_user_plant(
+    payload: UserPlantCreate, 
+    db: Session = Depends(get_db)
+) -> UserPlant:
     user_plant = UserPlant(**payload.model_dump())
     db.add(user_plant)
     db.commit()
@@ -34,7 +37,11 @@ def get_user_plant(user_plant_id: str, db: Session = Depends(get_db)) -> UserPla
     return user_plant
 
 @router.patch("/{user_plant_id}", response_model=UserPlantRead)
-def update_user_plant(user_plant_id: str, payload: UserPlantUpdate, db: Session = Depends(get_db)) -> UserPlant:
+def update_user_plant(
+    user_plant_id: str, 
+    payload: UserPlantUpdate, 
+    db: Session = Depends(get_db)
+) -> UserPlant:
     user_plant = db.get(UserPlant, user_plant_id)
     if user_plant is None:
         raise HTTPException(status_code=404, detail="User plant not found")

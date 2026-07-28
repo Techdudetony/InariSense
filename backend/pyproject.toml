@@ -1,0 +1,31 @@
+[tool.ruff]
+line-length = 110
+extend-exclude = ["alembic/versions", "venv", "__pycache__"]
+
+[tool.ruff.lint]
+# Scoped intentionally to E (pycodestyle errors), F (pyflakes — real bugs
+# like unused imports/undefined names), and B (bugbear — common footguns)
+# rather than ruff's full rule catalog. The goal is a lint gate that
+# catches real mistakes without blocking PRs on style preferences
+# (import sorting, typing-syntax modernization, etc.) this early in the
+# project.
+select = ["E", "F", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# SQLAlchemy resolves Mapped["ClassName"] forward references via its own
+# mapper registry at runtime (see app/models/__init__.py), not via
+# Python's static name resolution — ruff can't see that, so it flags
+# every cross-file relationship() reference as an undefined name. This is
+# a known, understood false positive tied to the ORM pattern itself, not
+# a real bug — see the discussion of this exact SQLAlchemy behavior
+# earlier in the project.
+"app/models/*.py" = ["F821"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency-injection pattern (Depends(get_db) as a default
+# argument value) is idiomatic FastAPI, not the mutable-default-argument
+# footgun B008 exists to catch. Marking these as immutable calls avoids
+# ~40 false positives across every router in this project without
+# disabling B008 entirely (it still catches genuine mutable-default bugs
+# elsewhere).
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Body", "fastapi.Path"]
