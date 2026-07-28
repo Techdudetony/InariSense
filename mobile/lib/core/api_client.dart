@@ -56,4 +56,25 @@ class ApiClient {
 
     return ApiResponse(statusCode: response.statusCode, data: decoded);
   }
+
+  /// queryParams values are converted with toString() and included as-is
+  /// — omit a key entirely (rather than passing an empty string) for
+  /// optional filters the caller doesn't want applied.
+  Future<ApiResponse> get(String path,
+      {Map<String, dynamic>? queryParams}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(
+      queryParameters:
+          queryParams?.map((key, value) => MapEntry(key, value.toString())),
+    );
+    final response = await http.get(uri);
+
+    dynamic decoded;
+    try {
+      decoded = response.body.isNotEmpty ? jsonDecode(response.body) : null;
+    } catch (_) {
+      decoded = null;
+    }
+
+    return ApiResponse(statusCode: response.statusCode, data: decoded);
+  }
 }
