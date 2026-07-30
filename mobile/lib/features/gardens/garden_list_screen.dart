@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../../core/api_client.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
+import 'garden_form_screen.dart';
 import 'garden_model.dart';
 
 class GardenListScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _GardenListScreenState extends State<GardenListScreen> {
       } else {
         setState(() {
           _errorMessage =
-              'Something went wrong loading your gardens. Please try again,';
+              'Something went wrong loading your gardens. Please try again.';
           _isLoading = false;
         });
       }
@@ -81,17 +82,19 @@ class _GardenListScreenState extends State<GardenListScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           content:
-              Text('${garden.name} — detail screen not built yet (KAN-23)')),
+              Text('${garden.name} — detail screen not built yet (KAN-24)')),
     );
   }
 
-  void _onAddGardenPressed() {
-    // TODO(KAN-23): navigate to the create/edit garden screen once it
-    // exists, then refresh the list on return.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          content: Text('Create garden screen not built yet (KAN-23)')),
+  Future<void> _onAddGardenPressed() async {
+    final result = await Navigator.of(context).push<Garden>(
+      MaterialPageRoute(
+          builder: (_) => GardenFormScreen(userId: widget.userId)),
     );
+
+    if (result != null) {
+      _fetchGardens();
+    }
   }
 
   @override
@@ -131,9 +134,9 @@ class _GardenListScreenState extends State<GardenListScreen> {
 
     if (_gardens.isEmpty) {
       return ListView(
-        children: [
+        children: const [
           Padding(
-            padding: EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xxl),
             child: Center(
               child: Text('No gardens yet. Tap + to add your first one.'),
             ),
