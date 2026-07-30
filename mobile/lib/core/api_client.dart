@@ -77,4 +77,23 @@ class ApiClient {
 
     return ApiResponse(statusCode: response.statusCode, data: decoded);
   }
+
+  Future<ApiResponse> patch(String path,
+      {required Map<String, dynamic> body}) async {
+    final uri = Uri.parse('$baseUrl$path');
+    final response = await http.patch(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    dynamic decoded;
+    try {
+      decoded = response.body.isNotEmpty ? jsonDecode(response.body) : null;
+    } catch (_) {
+      decoded = null;
+    }
+
+    return ApiResponse(statusCode: response.statusCode, data: decoded);
+  }
 }
