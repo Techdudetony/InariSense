@@ -63,10 +63,12 @@ class _PlantingCalendarScreenState extends State<PlantingCalendarScreen> {
 
     try {
       final queryParams = <String, dynamic>{'garden_id': widget.gardenId};
-      if (_selectedCategory != null)
+      if (_selectedCategory != null) {
         queryParams['category'] = _selectedCategory;
-      if (_selectedSunlight != null)
+      }
+      if (_selectedSunlight != null) {
         queryParams['sunlight'] = _selectedSunlight;
+      }
 
       final response = await ApiClient.instance
           .get('/recommendations/', queryParams: queryParams);
