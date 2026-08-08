@@ -9,16 +9,7 @@
 ///   host machine's localhost — 127.0.0.1 from INSIDE the emulator
 ///   means the emulator itself, not your dev machine.)
 /// - iOS simulator: http://127.0.0.1:8000
-///   (the iOS simulator shares your Mac's network stack directly, so
-///   localhost/127.0.0.1 works as expected.)
-/// - Physical device (either platform): your dev machine's LAN IP,
-///   e.g. http://192.168.1.50:8000 — the device is on the same Wi-Fi
-///   network as your machine, not literally the same host.
-///
-/// This is hard-coded to the Android emulator default for now since
-/// that's what's been used for backend testing so far. Swap the
-/// baseUrl below (or wire it to an environment-based config) once
-/// you're testing on iOS or a physical device.
+/// - Physical device (either platform): your dev machine's LAN IP.
 library;
 
 import 'dart:convert';
@@ -57,16 +48,14 @@ class ApiClient {
     return ApiResponse(statusCode: response.statusCode, data: decoded);
   }
 
-  /// queryParams values are converted with toString() and included as-is
-  /// — omit a key entirely (rather than passing an empty string) for
-  /// optional filters the caller doesn't want applied.
-  Future<ApiResponse> get(String path,
-      {Map<String, dynamic>? queryParams}) async {
-    final uri = Uri.parse('$baseUrl$path').replace(
-      queryParameters:
-          queryParams?.map((key, value) => MapEntry(key, value.toString())),
+  Future<ApiResponse> patch(String path,
+      {required Map<String, dynamic> body}) async {
+    final uri = Uri.parse('$baseUrl$path');
+    final response = await http.patch(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
     );
-    final response = await http.get(uri);
 
     dynamic decoded;
     try {
@@ -78,14 +67,16 @@ class ApiClient {
     return ApiResponse(statusCode: response.statusCode, data: decoded);
   }
 
-  Future<ApiResponse> patch(String path,
-      {required Map<String, dynamic> body}) async {
-    final uri = Uri.parse('$baseUrl$path');
-    final response = await http.patch(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
+  /// queryParams values are converted with toString() and included as-is
+  /// — omit a key entirely (rather than passing an empty string) for
+  /// optional filters the caller doesn't want applied.
+  Future<ApiResponse> get(String path,
+      {Map<String, dynamic>? queryParams}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(
+      queryParameters:
+          queryParams?.map((key, value) => MapEntry(key, value.toString())),
     );
+    final response = await http.get(uri);
 
     dynamic decoded;
     try {
