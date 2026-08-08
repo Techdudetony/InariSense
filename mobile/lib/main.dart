@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:inarisense/core/session_bootstrap.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -22,21 +23,7 @@ class InariSenseApp extends StatelessWidget {
     return MaterialApp(
       title: 'InariSense',
       theme: buildAppTheme(),
-      home: const HomePlaceholder(),
-    );
-  }
-}
-
-class HomePlaceholder extends StatelessWidget {
-  const HomePlaceholder({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('InariSense')),
-      body: const Center(
-        child: Text('Scaffold only — Home dashboard not yet built.'),
-      ),
+      home: const SessionBootstrap(),
     );
   }
 }
