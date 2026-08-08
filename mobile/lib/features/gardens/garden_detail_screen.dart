@@ -1,10 +1,9 @@
-/// Garden detail screen (KAN-24).
+/// Garden detail screen (KAN-24, updated for KAN-25).
 ///
 /// Shows garden info, its location (or a prompt to set one, reusing
 /// LocationSetupScreen from KAN-13), and its beds with plantings inside
-/// each. Edit navigates to GardenFormScreen (KAN-23). Adding a bed is
-/// left as a TODO(KAN-25) placeholder, same pattern as the list screen's
-/// earlier placeholders — the next story wires that up for real.
+/// each. Edit navigates to GardenFormScreen (KAN-23). "Add Bed" and
+/// per-bed "Add Planting" now navigate to real forms (KAN-25).
 library;
 
 import 'package:flutter/material.dart';
@@ -13,6 +12,8 @@ import '../../core/api_client.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../location_setup/location_setup_screen.dart';
+import 'add_bed_screen.dart';
+import 'add_planting_screen.dart';
 import 'garden_bed_model.dart';
 import 'garden_form_screen.dart';
 import 'garden_location_model.dart';
@@ -137,11 +138,27 @@ class _GardenDetailScreenState extends State<GardenDetailScreen> {
     _fetchAll();
   }
 
-  void _onAddBedPressed() {
-    // TODO(KAN-25): navigate to the add-bed form once it exists.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Add bed form not built yet (KAN-25)')),
+  Future<void> _onAddBedPressed() async {
+    final result = await Navigator.of(context).push<GardenBed>(
+      MaterialPageRoute(builder: (_) => AddBedScreen(gardenId: _garden.id)),
     );
+
+    if (result != null) {
+      _fetchAll();
+    }
+  }
+
+  Future<void> _onAddPlantingPressed(GardenBed bed) async {
+    final result = await Navigator.of(context).push<Planting>(
+      MaterialPageRoute(
+        builder: (_) =>
+            AddPlantingScreen(gardenBedId: bed.id, userId: _garden.userId),
+      ),
+    );
+
+    if (result != null) {
+      _fetchAll();
+    }
   }
 
   @override
@@ -155,6 +172,7 @@ class _GardenDetailScreenState extends State<GardenDetailScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddBedPressed,
+        tooltip: 'Add bed',
         child: const Icon(Icons.add),
       ),
       body: RefreshIndicator(onRefresh: _fetchAll, child: _buildBody()),
@@ -262,9 +280,22 @@ class _GardenDetailScreenState extends State<GardenDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(bed.name,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    bed.name,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () => _onAddPlantingPressed(bed),
+                  icon: const Icon(Icons.add, size: 16),
+                  label: const Text('Add Planting'),
+                ),
+              ],
+            ),
             if (bed.dimensions != null)
               Text(bed.dimensions!,
                   style: const TextStyle(fontSize: 13, color: AppColors.soil)),
