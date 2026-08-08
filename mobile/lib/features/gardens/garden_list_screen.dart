@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../../core/api_client.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
+import 'garden_detail_screen.dart';
 import 'garden_form_screen.dart';
 import 'garden_model.dart';
 
@@ -75,15 +76,14 @@ class _GardenListScreenState extends State<GardenListScreen> {
     }
   }
 
-  void _onGardenTapped(Garden garden) {
-    // TODO(KAN-24): navigate to the garden detail screen once it exists.
-    // Left as a visible placeholder rather than a silent no-op, so it's
-    // obvious this isn't finished yet during manual testing.
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content:
-              Text('${garden.name} — detail screen not built yet (KAN-24)')),
+  Future<void> _onGardenTapped(Garden garden) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => GardenDetailScreen(garden: garden)),
     );
+    // The detail screen may have edited this garden — simplest reliable
+    // refresh is just re-fetching the whole list rather than tracking
+    // which single item changed.
+    _fetchGardens();
   }
 
   Future<void> _onAddGardenPressed() async {
