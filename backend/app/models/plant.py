@@ -1,9 +1,7 @@
 """PlantSpecies, PlantVariety, UserPlant, and Planting models.
 
-source_identification_id on UserPlant is left as a plain nullable string
-(not a foreign key yet) since PlantIdentification doesn't exist as a table
-until the identification feature branch — it'll be upgraded to a real FK
-at that point rather than left dangling.
+source_identification_id on UserPlant is being upgraded to a real FK to
+PlantIdentification as part of KAN-26, now that entity exists.
 """
 
 import enum
@@ -34,9 +32,9 @@ class WaterRequirement(str, enum.Enum):
 
 
 class FrostTolerance(str, enum.Enum):
-    frost_sensitive = "frost_sensitive"  # damaged/killed by any frost
-    half_hardy = "half_hardy"  # tolerates light frost
-    hardy = "hardy"  # tolerates hard frost
+    frost_sensitive = "frost_sensitive"
+    half_hardy = "half_hardy"
+    hardy = "hardy"
 
 
 class PlantSpecies(Base, TimestampMixin):
@@ -52,10 +50,6 @@ class PlantSpecies(Base, TimestampMixin):
     taxonomy_source: Mapped[str | None] = mapped_column(String, nullable=True)
     synonyms: Mapped[str | None] = mapped_column(String, nullable=True)
 
-    # Growing requirements — added for the Planting Calendar recommendation
-    # engine (KAN-18/KAN-19). All nullable: a species with unknown
-    # requirements should show up as "not enough data" in a recommendation
-    # rather than block the record from existing at all.
     sunlight_requirement: Mapped[SunlightRequirement | None] = mapped_column(nullable=True)
     water_requirement: Mapped[WaterRequirement | None] = mapped_column(nullable=True)
     frost_tolerance: Mapped[FrostTolerance | None] = mapped_column(nullable=True)
@@ -94,11 +88,14 @@ class UserPlant(Base, TimestampMixin):
         ForeignKey("plant_varieties.id"), nullable=True
     )
     nickname: Mapped[str | None] = mapped_column(String, nullable=True)
-    source_identification_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_identification_id: Mapped[str | None] = mapped_column(
+        ForeignKey("plant_identifications.id"), nullable=True
+    )
 
     user: Mapped["User"] = relationship(back_populates="user_plants")
     species: Mapped["PlantSpecies"] = relationship()
     variety: Mapped["PlantVariety | None"] = relationship()
+    source_identification: Mapped["PlantIdentification | None"] = relationship()
     plantings: Mapped[list["Planting"]] = relationship(
         back_populates="user_plant", cascade="all, delete-orphan"
     )

@@ -17,3 +17,12 @@ from app.models.plant import (  # noqa: F401
     WaterRequirement,
     FrostTolerance,
 )
+from app.models.identification import (
+    PlantIdentification,
+    IdentificationCandidate,
+    IdentificationEvidence,
+    ImageAnnotation,
+    IdentificationStatus,
+    ConfidenceLabel,
+    EvidenceDirection,
+)
