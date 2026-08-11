@@ -14,5 +14,6 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./inarisense.db"
     environment: str = "development"
+    plantnet_api_key: str = ""
 
 settings = Settings()
