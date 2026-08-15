@@ -28,4 +28,4 @@ select = ["E", "F", "B"]
 # ~40 false positives across every router in this project without
 # disabling B008 entirely (it still catches genuine mutable-default bugs
 # elsewhere).
-extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Body", "fastapi.Path"]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Body", "fastapi.Path", "fastapi.File", "fastapi.Form"]
