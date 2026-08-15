@@ -96,7 +96,7 @@ async def create_identification(
 
     image_payload: list[tuple[bytes, str, str]] = []
     stored_refs: list[str] = []
-    for upload, organ in zip(images, organs):
+    for upload, organ in zip(images, organs, strict=True):
         content = await upload.read()
         filename = upload.filename or "upload.jpg"
         stored_refs.append(save_image(content, filename))
