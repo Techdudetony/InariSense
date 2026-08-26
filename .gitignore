@@ -1,0 +1,64 @@
+# ── Secrets — never commit these ─────────────────────────────────────
+backend/.env
+.env
+.env.*
+!.env.example
+
+# ── Python (backend) ─────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+ENV/
+
+# Local dev database
+backend/*.db
+backend/*.db-journal
+
+# Local identification image storage (dev placeholder, not real object storage)
+backend/uploads/
+
+# ── Flutter / Dart (mobile) ──────────────────────────────────────────
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/.flutter-versions
+
+# pubspec.lock IS committed for apps (not ignored) — only ignore it for
+# packages/plugins, which this isn't.
+
+# Android
+mobile/android/local.properties
+mobile/android/**/gradle-wrapper.jar
+mobile/android/.gradle/
+mobile/android/captures/
+mobile/android/gradlew
+mobile/android/gradlew.bat
+mobile/android/**/GeneratedPluginRegistrant.java
+
+# iOS
+mobile/ios/Flutter/flutter_export_environment.sh
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/App.framework
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Flutter.podspec
+
+# ── IDE / OS ──────────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ── Misc ──────────────────────────────────────────────────────────────
+*.log
