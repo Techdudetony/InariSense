@@ -70,7 +70,7 @@ class ApiClient {
 
   /// Multipart POST — used for the identification upload, which needs
   /// both files (images) and repeated non-file fields (organs, one per
-  /// image). http.MultipartRequest.fields is a plain Map<String,String>
+  /// image). http.MultipartRequest.fields is a plain `Map<String,String>`
   /// and can't represent repeated keys, so every field here (including
   /// plain text ones like user_id and organs) is added via
   /// request.files using MultipartFile.fromString with no filename —
