@@ -3,16 +3,15 @@
 ///
 /// Tabs without a built screen yet show a clearly labeled "not built
 /// yet" placeholder (with a Jira reference where one exists) instead of
-/// being hidden — the nav structure reflects the app's intended shape
-/// from docs/01-product-requirements.md even before every tab has real
-/// content, same TODO-placeholder pattern used throughout the rest of
-/// the app.
+/// being hidden. My Garden and Identify are now real; the rest are
+/// still placeholders.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../../core/theme/colors.dart';
 import '../gardens/garden_list_screen.dart';
+import '../identification/identify_tab_home.dart';
 
 class HomeShell extends StatefulWidget {
   final String userId;
@@ -31,7 +30,7 @@ class _HomeShellState extends State<HomeShell> {
     final tabs = [
       const _HomeTabPlaceholder(),
       GardenListScreen(userId: widget.userId),
-      const _NotBuiltYetTab(label: 'Identify', jiraKey: 'KAN-6'),
+      IdentifyTabHome(userId: widget.userId),
       const _NotBuiltYetTab(label: 'Tasks', jiraKey: 'KAN-8'),
       const _NotBuiltYetTab(label: 'Journal', jiraKey: 'KAN-10'),
       const _NotBuiltYetTab(label: 'Learn', jiraKey: null),
